@@ -61,6 +61,7 @@ function Tentacoli (opts) {
       reply.toCall = toCall
       reply.stream = stream
       reply.response = response
+      reply.sent = false
       qIn.push(reply, noop)
     })
 
@@ -122,10 +123,13 @@ function Tentacoli (opts) {
     this.stream = null
     this.callback = noop
     this.toCall = null
+    this.sent = false
 
     var that = this
 
     this.func = function reply (err, result) {
+      if (that.sent) return
+      that.sent = true
       if (err) {
         self.emit('responseError', err)
         that.response.error = err.message
