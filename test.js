@@ -375,3 +375,25 @@ test('errors if the sender is destroyed', function (t) {
     s.sender.destroy()
   })
 })
+
+test('cannot reply more than one time', function (t) {
+  t.plan(4)
+
+  var s = setup()
+  var msg = 'the answer to life, the universe and everything'
+  var expected = '42'
+
+  s.sender.request(msg, function (err, res) {
+    t.error(err, 'no error')
+    t.deepEqual(res, expected, 'response matches')
+  })
+
+  s.receiver.on('request', function (req, reply) {
+    t.deepEqual(req, msg, 'request matches')
+    reply(null, expected)
+    setTimeout(function () {
+      reply(null, expected)
+      t.pass('second time')
+    }, 200)
+  })
+})
