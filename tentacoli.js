@@ -172,7 +172,7 @@ function mapStream (key) {
   if (!stream._transform && stream._readableState && stream._writableState) {
     type = messages.StreamType.Duplex
     objectMode = stream._readableState.objectMode || stream._writableState.objectMode
-  } else if (!stream._writableState || stream._readableState && stream._readableState.pipesCount === 0) {
+  } else if ((!stream._writableState || stream._readableState) && stream._readableState.pipesCount === 0) {
     type = messages.StreamType.Readable
     objectMode = stream._readableState.objectMode
   } else {

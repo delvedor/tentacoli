@@ -236,8 +236,8 @@ test('supports custom encodings', function (t) {
   var s = setup({ codec: msgpack() })
   var msg = { cmd: 'subscribe' }
   var expected = [
-    new Buffer('hello'),
-    new Buffer('streams')
+    Buffer.from('hello'),
+    Buffer.from('streams')
   ]
 
   s.sender.request(msg, function (err, res) {
